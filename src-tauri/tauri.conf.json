@@ -1,0 +1,78 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Outils Des Bonobos",
+  "version": "0.1.2",
+  "identifier": "com.canni.bonobos-fr-app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Outils Des Bonobos",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "maximized": false
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "script-src": ["'self'", "'unsafe-inline'"],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "data:"],
+        "connect-src": ["'self'", "http://localhost:1420", "ws://localhost:1421"],
+        "font-src": ["'self'"],
+        "object-src": "'none'",
+        "base-uri": "'self'",
+        "form-action": "'self'"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "template": "nsis/installer.nsi",
+        "installMode": "currentUser",
+        "languages": [
+          "French",
+          "English"
+        ],
+        "displayLanguageSelector": true,
+        "startMenuFolder": "Outils Des Bonobos"
+      }
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["com.canni.bonobos-fr-app"]
+      }
+    },
+    "updater": {
+      "requireSignedVersion": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI3MkY3MkRDNTM1REM2OUEKUldTYXhsMVQzSEl2dCs0ZUlOZDlYZ2tFdUV6VXJETGpqbUUwK1N2d1orbGpGV0F1OU1EQWNnUTYK",
+      "endpoints": [
+        "https://github.com/Canni38/Outils-Des-Bonobos-Updates/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}

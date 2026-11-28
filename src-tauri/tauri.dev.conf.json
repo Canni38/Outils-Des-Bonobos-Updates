@@ -1,0 +1,22 @@
+{
+  "app": {
+    "security": {
+      "csp": {
+        "connect-src": [
+          "'self'",
+          "http://localhost:1420",
+          "ws://localhost:1421",
+          "http://127.0.0.1:8080"
+        ],
+        "script-src": [
+          "'self'",
+          "'unsafe-inline'"
+        ],
+        "style-src": [
+          "'self'",
+          "'unsafe-inline'"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bonobos.local/schemas/layout-v3.schema.json",
+  "title": "Outils Des Bonobos layout configuration v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "layoutId", "pages"],
+  "properties": {
+    "schemaVersion": { "const": 3 },
+    "layoutId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9._-]*$"
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": { "$ref": "#/definitions/page" }
+    }
+  },
+  "definitions": {
+    "nodeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9._-]*$"
+    },
+    "nodeName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "alignment": { "enum": ["left", "center", "right"] },
+    "spacing": { "enum": ["none", "small", "medium", "large"] },
+    "rectangle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "responsivePlacement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["desktop", "tablet", "mobile"],
+      "properties": {
+        "desktop": { "$ref": "#/definitions/rectangle" },
+        "tablet": { "$ref": "#/definitions/rectangle" },
+        "mobile": { "$ref": "#/definitions/rectangle" }
+      }
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "order", "layoutMode", "rows"],
+      "properties": {
+        "id": { "$ref": "#/definitions/nodeId" },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "order": { "type": "integer", "minimum": 0 },
+        "layoutMode": { "enum": ["flow", "free"] },
+        "rows": {
+          "type": "array",
+          "maxItems": 100,
+          "items": { "$ref": "#/definitions/row" }
+        }
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "columns"],
+      "properties": {
+        "type": { "const": "row" },
+        "id": { "$ref": "#/definitions/nodeId" },
+        "name": { "$ref": "#/definitions/nodeName" },
+        "alignment": { "$ref": "#/definitions/alignment" },
+        "spacing": { "$ref": "#/definitions/spacing" },
+        "spacingPx": { "type": "number", "minimum": 0 },
+        "placement": { "$ref": "#/definitions/responsivePlacement" },
+        "zIndex": { "type": "integer" },
+        "columns": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/column" }
+        }
+      }
+    },
+    "column": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "blocks"],
+      "properties": {
+        "type": { "const": "column" },
+        "id": { "$ref": "#/definitions/nodeId" },
+        "name": { "$ref": "#/definitions/nodeName" },
+        "alignment": { "$ref": "#/definitions/alignment" },
+        "spacing": { "$ref": "#/definitions/spacing" },
+        "spacingPx": { "type": "number", "minimum": 0 },
+        "placement": { "$ref": "#/definitions/responsivePlacement" },
+        "zIndex": { "type": "integer" },
+        "span": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mobile", "tablet", "desktop"],
+          "properties": {
+            "mobile": { "type": "integer", "minimum": 1, "maximum": 12 },
+            "tablet": { "type": "integer", "minimum": 1, "maximum": 12 },
+            "desktop": { "type": "integer", "minimum": 1, "maximum": 12 }
+          }
+        },
+        "blocks": {
+          "type": "array",
+          "maxItems": 100,
+          "items": { "$ref": "#/definitions/block" }
+        }
+      }
+    },
+    "detachedIcon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "iconId", "placement", "zIndex"],
+      "properties": {
+        "type": { "const": "icon" },
+        "id": { "$ref": "#/definitions/nodeId" },
+        "name": { "$ref": "#/definitions/nodeName" },
+        "iconId": { "enum": ["info", "check", "arrow-right"] },
+        "spacingPx": { "type": "number", "minimum": 0 },
+        "placement": { "$ref": "#/definitions/responsivePlacement" },
+        "zIndex": { "type": "integer" }
+      }
+    },
+    "block": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "text", "level"],
+          "properties": {
+            "type": { "const": "heading" },
+            "id": { "$ref": "#/definitions/nodeId" },
+            "name": { "$ref": "#/definitions/nodeName" },
+            "alignment": { "$ref": "#/definitions/alignment" },
+            "spacing": { "$ref": "#/definitions/spacing" },
+            "spacingPx": { "type": "number", "minimum": 0 },
+            "placement": { "$ref": "#/definitions/responsivePlacement" },
+            "zIndex": { "type": "integer" },
+            "text": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "level": { "type": "integer", "enum": [1, 2, 3] }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "text", "tone"],
+          "properties": {
+            "type": { "const": "text" },
+            "id": { "$ref": "#/definitions/nodeId" },
+            "name": { "$ref": "#/definitions/nodeName" },
+            "alignment": { "$ref": "#/definitions/alignment" },
+            "spacing": { "$ref": "#/definitions/spacing" },
+            "spacingPx": { "type": "number", "minimum": 0 },
+            "placement": { "$ref": "#/definitions/responsivePlacement" },
+            "zIndex": { "type": "integer" },
+            "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
+            "tone": { "enum": ["default", "muted", "accent"] }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "label", "actionId", "variant"],
+          "properties": {
+            "type": { "const": "button" },
+            "id": { "$ref": "#/definitions/nodeId" },
+            "name": { "$ref": "#/definitions/nodeName" },
+            "alignment": { "$ref": "#/definitions/alignment" },
+            "spacing": { "$ref": "#/definitions/spacing" },
+            "spacingPx": { "type": "number", "minimum": 0 },
+            "placement": { "$ref": "#/definitions/responsivePlacement" },
+            "zIndex": { "type": "integer" },
+            "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+            "actionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-z][a-z0-9._-]*$"
+            },
+            "variant": { "enum": ["primary", "secondary"] },
+            "iconId": { "enum": ["info", "check", "arrow-right"] },
+            "detachedIcon": { "$ref": "#/definitions/detachedIcon" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "title", "content"],
+          "properties": {
+            "type": { "const": "card" },
+            "id": { "$ref": "#/definitions/nodeId" },
+            "name": { "$ref": "#/definitions/nodeName" },
+            "alignment": { "$ref": "#/definitions/alignment" },
+            "spacing": { "$ref": "#/definitions/spacing" },
+            "spacingPx": { "type": "number", "minimum": 0 },
+            "placement": { "$ref": "#/definitions/responsivePlacement" },
+            "zIndex": { "type": "integer" },
+            "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+            "content": { "type": "string", "minLength": 1, "maxLength": 2000 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id"],
+          "properties": {
+            "type": { "const": "separator" },
+            "id": { "$ref": "#/definitions/nodeId" },
+            "name": { "$ref": "#/definitions/nodeName" },
+            "alignment": { "$ref": "#/definitions/alignment" },
+            "spacing": { "$ref": "#/definitions/spacing" },
+            "spacingPx": { "type": "number", "minimum": 0 },
+            "placement": { "$ref": "#/definitions/responsivePlacement" },
+            "zIndex": { "type": "integer" }
+          }
+        }
+      ]
+    }
+  }
+}

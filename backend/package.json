@@ -1,0 +1,30 @@
+{
+  "name": "@bonobos/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "migrate": "tsx src/migrate.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "tsx --test tests/backend.test.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.4.3",
+    "@fastify/helmet": "^13.0.2",
+    "fastify": "^5.6.1",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "@types/node": "^22.15.0",
+    "@types/pg": "^8.15.5",
+    "tsx": "^4.20.5",
+    "typescript": "^6.0.3"
+  }
+}

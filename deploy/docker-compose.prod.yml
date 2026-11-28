@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bonobos}
+      POSTGRES_USER: ${POSTGRES_USER:-bonobos}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - bonobos-postgres-data:/var/lib/postgresql/data
+    networks:
+      - bonobos-internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # No ports published: PostgreSQL stays internal only.
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-bonobos}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-bonobos}
+      DATABASE_SSL: "false"
+      BONOBOS_ALLOW_INSECURE_INTERNAL_DB: "true"
+      BONOBOS_API_HOST: "0.0.0.0"
+      BONOBOS_API_PORT: "8080"
+      BONOBOS_CORS_ORIGINS: ${BONOBOS_CORS_ORIGINS:-http://localhost:1420,http://tauri.localhost}
+      STEAM_OPENID_RETURN_URL: ${STEAM_OPENID_RETURN_URL}
+      INITIAL_ADMIN_STEAM_IDS: ${INITIAL_ADMIN_STEAM_IDS}
+      STEAM_API_KEY: ${STEAM_API_KEY:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bonobos-internal
+    # Backend port is exposed only to the host loopback for Nginx.
+    ports:
+      - "127.0.0.1:8080:8080"
+
+networks:
+  bonobos-internal:
+    driver: bridge
+
+volumes:
+  bonobos-postgres-data:

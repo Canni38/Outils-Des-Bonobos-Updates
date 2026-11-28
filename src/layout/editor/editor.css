@@ -1,0 +1,575 @@
+.layout-editor {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.layout-editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #777;
+}
+
+.layout-editor-title h1 {
+  margin: 0;
+  text-align: left;
+}
+
+.layout-editor-title span,
+.layout-editor-status,
+.layout-editor-stage-header span {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.layout-editor-toolbar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 6px;
+}
+
+.layout-editor-toolbar-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.8rem;
+}
+
+.layout-editor-toolbar-controls button,
+.layout-editor-toolbar-controls select,
+.layout-editor-library button,
+.layout-editor-node-toolbar button,
+.layout-editor-properties button {
+  padding: 5px 8px;
+  font-size: 0.8rem;
+}
+
+.layout-editor-status {
+  min-height: 1.4em;
+}
+
+.layout-editor-error {
+  margin: 4px 0;
+  color: #a00000;
+  overflow-wrap: anywhere;
+}
+
+.layout-editor-notice {
+  margin: 4px 0;
+  overflow-wrap: anywhere;
+}
+
+.layout-editor-workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(150px, 190px) minmax(260px, 1fr) minmax(190px, 230px);
+  gap: 10px;
+}
+
+.layout-editor-library,
+.layout-editor-properties,
+.layout-editor-stage {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #777;
+  border-radius: 6px;
+  background: rgba(127, 127, 127, 0.06);
+}
+
+.layout-editor-library,
+.layout-editor-properties {
+  overflow: auto;
+}
+
+.layout-editor-library h2,
+.layout-editor-properties h2,
+.layout-editor-stage-header h2 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.layout-editor-library-section {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.layout-editor-library-section h3 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.layout-editor-library-section p,
+.layout-editor-library-hint {
+  margin: 4px 0;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.layout-editor-stage {
+  overflow: auto;
+}
+
+.layout-editor-stage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.layout-editor-page {
+  box-sizing: border-box;
+  min-height: 320px;
+  width: min(100%, 1024px);
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid #777;
+  background: rgba(127, 127, 127, 0.04);
+}
+
+.layout-editor-page.layout-page--mobile {
+  width: min(100%, 375px);
+}
+
+.layout-editor-page.layout-page--tablet {
+  width: min(100%, 768px);
+}
+
+.layout-editor-page.layout-page--desktop {
+  width: min(100%, 1024px);
+}
+
+.layout-editor-free-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.layout-editor-free-controls > label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.8rem;
+}
+
+.layout-editor-free-controls select {
+  min-width: 180px;
+  padding: 5px 6px;
+}
+
+.layout-editor-free-controls .layout-editor-snap-toggle {
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.layout-editor-free-hint {
+  align-self: center;
+  font-size: 0.78rem;
+  opacity: 0.8;
+}
+
+.layout-editor-free-page {
+  position: relative;
+  isolation: isolate;
+}
+
+.layout-editor-free-item {
+  position: absolute;
+  box-sizing: border-box;
+  overflow: visible;
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+}
+
+.layout-editor-free-item--row {
+  border: 1px dashed rgba(62, 133, 154, 0.7);
+  background: rgba(62, 133, 154, 0.035);
+}
+
+.layout-editor-free-item--column {
+  border: 1px solid rgba(115, 145, 105, 0.65);
+  background: rgba(115, 145, 105, 0.035);
+}
+
+.layout-editor-free-item--block {
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.layout-editor-free-item.is-selected {
+  outline: 2px solid #38a9c2;
+  outline-offset: 1px;
+}
+
+.layout-editor-free-item-label {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  max-width: calc(100% - 6px);
+  overflow: hidden;
+  color: #35515a;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.layout-editor-free-content {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.layout-editor-free-content > .layout-block {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0;
+}
+
+.layout-editor-free-content > .layout-block--button,
+.layout-editor-free-content > .layout-block--card {
+  width: 100%;
+  height: 100%;
+}
+
+.layout-editor-free-item--icon .layout-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.layout-editor-resize-overlay {
+  position: absolute;
+  z-index: 2147483645;
+  pointer-events: auto;
+}
+
+.layout-editor-resize-handle {
+  position: absolute;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 1px solid #16798f;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  cursor: nwse-resize;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.layout-editor-resize-handle--top-left,
+.layout-editor-resize-handle--bottom-right {
+  cursor: nwse-resize;
+}
+
+.layout-editor-resize-handle--top-right,
+.layout-editor-resize-handle--bottom-left {
+  cursor: nesw-resize;
+}
+
+.layout-editor-resize-handle--top,
+.layout-editor-resize-handle--bottom {
+  left: 50%;
+  cursor: ns-resize;
+}
+
+.layout-editor-resize-handle--left,
+.layout-editor-resize-handle--right {
+  top: 50%;
+  cursor: ew-resize;
+}
+
+.layout-editor-resize-handle--top-left,
+.layout-editor-resize-handle--top,
+.layout-editor-resize-handle--top-right {
+  top: 0;
+}
+
+.layout-editor-resize-handle--top-left,
+.layout-editor-resize-handle--left,
+.layout-editor-resize-handle--bottom-left {
+  left: 0;
+}
+
+.layout-editor-resize-handle--top-right,
+.layout-editor-resize-handle--right,
+.layout-editor-resize-handle--bottom-right {
+  left: 100%;
+}
+
+.layout-editor-resize-handle--bottom-left,
+.layout-editor-resize-handle--bottom,
+.layout-editor-resize-handle--bottom-right {
+  top: 100%;
+}
+
+.layout-editor-free-guides {
+  position: absolute;
+  z-index: 2147483646;
+  inset: 0;
+  pointer-events: none;
+}
+
+.layout-editor-free-guide {
+  position: absolute;
+  background: #e2a400;
+}
+
+.layout-editor-free-guide--x {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.layout-editor-free-guide--y {
+  right: 0;
+  left: 0;
+  height: 1px;
+}
+
+.layout-editor-free-distance {
+  position: absolute;
+  z-index: 2147483647;
+  max-width: 100%;
+  padding: 3px 6px;
+  border-radius: 3px;
+  color: #fff;
+  background: #333;
+  font-size: 0.68rem;
+  pointer-events: none;
+}
+
+.layout-editor-row {
+  min-width: 0;
+  margin-bottom: 10px;
+  padding: 6px;
+  border: 1px solid #888;
+  border-radius: 4px;
+}
+
+.layout-editor-node-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.layout-editor-node-select {
+  text-align: left;
+}
+
+.layout-editor-drag-handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.layout-editor-drag-handle:active {
+  cursor: grabbing;
+}
+
+.layout-editor-add-inline,
+.layout-editor-delete {
+  margin-left: auto;
+}
+
+.layout-editor-column {
+  box-sizing: border-box;
+  min-height: 90px;
+  border: 1px dashed #888;
+  border-radius: 4px;
+}
+
+.layout-editor-column.is-selected,
+.layout-editor-row.is-selected,
+.layout-editor-block.is-selected {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+.layout-editor-column.is-drop-target,
+.layout-editor-row.is-drop-target,
+.layout-editor-block.is-drop-target {
+  outline: 2px dashed #555;
+  outline-offset: 2px;
+}
+
+.layout-editor-block-list {
+  min-height: 48px;
+}
+
+.layout-editor-block {
+  margin: 4px 0;
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.layout-editor-block .layout-editor-node-toolbar {
+  font-size: 0.75rem;
+}
+
+.layout-editor-block-preview {
+  pointer-events: none;
+}
+
+.layout-editor-empty {
+  margin: 8px 0;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.layout-editor-drag-overlay {
+  padding: 8px 12px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background: #f5f5f5;
+  color: #111;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.layout-editor-properties {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.layout-editor-property {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.82rem;
+}
+
+.layout-editor-property input,
+.layout-editor-property select,
+.layout-editor-property textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 5px 6px;
+  font-size: 0.85rem;
+}
+
+.layout-editor-property textarea {
+  resize: vertical;
+}
+
+.layout-editor-spans {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 8px;
+  border: 1px solid #888;
+}
+
+.layout-editor-spans legend {
+  padding: 0 4px;
+  font-size: 0.8rem;
+}
+
+.layout-editor-geometry {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 8px;
+  border: 1px solid #888;
+}
+
+.layout-editor-geometry legend {
+  padding: 0 4px;
+  font-size: 0.8rem;
+}
+
+.layout-editor-layer-value {
+  font-size: 0.78rem;
+}
+
+.layout-editor-layer-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.layout-editor-danger {
+  margin-top: 8px;
+}
+
+.layout-editor-preview {
+  box-sizing: border-box;
+  width: min(100%, 1024px);
+  min-height: 320px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.layout-editor-preview.layout-page--mobile {
+  width: min(100%, 375px);
+}
+
+.layout-editor-preview.layout-page--tablet {
+  width: min(100%, 768px);
+}
+
+.layout-editor-preview.layout-page--desktop {
+  width: min(100%, 1024px);
+}
+
+.layout-editor-preview-message,
+.layout-editor-preview-note {
+  margin: 12px auto;
+  max-width: 1024px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 1050px) {
+  .layout-editor-workspace {
+    grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
+  }
+
+  .layout-editor-properties {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    align-items: start;
+  }
+}
+
+@media (max-width: 650px) {
+  .layout-editor-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .layout-editor-toolbar-controls {
+    align-items: stretch;
+  }
+
+  .layout-editor-library,
+  .layout-editor-properties {
+    max-height: 40vh;
+  }
+
+  .layout-editor-stage {
+    min-height: 45vh;
+  }
+}

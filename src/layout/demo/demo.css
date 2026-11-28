@@ -1,0 +1,27 @@
+.layout-demo-page {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 24px;
+  color: #f6f6f6;
+  background: #2f2f2f;
+}
+
+.layout-demo-header,
+.layout-demo-content {
+  width: min(100%, 980px);
+  margin: 0 auto;
+}
+
+.layout-demo-header {
+  margin-bottom: 24px;
+  color: #b8b8b8;
+}
+
+.layout-demo-header p {
+  margin: 0;
+}
+
+.layout-demo-status {
+  margin-top: 20px;
+  color: #79d5e0;
+}

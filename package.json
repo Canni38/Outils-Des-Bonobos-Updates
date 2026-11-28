@@ -1,0 +1,38 @@
+{
+  "name": "bonobos-fr-app",
+  "private": true,
+  "version": "0.1.2",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test:auth": "node --experimental-strip-types --test tests/auth-contract.test.mjs",
+    "test:layout": "node --test tests/layout-core.test.mjs",
+    "storydev": "vite --open /?layout-editor --port 1421 --strictPort",
+    "tauri": "node scripts/tauri-build.mjs"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-deep-link": "^2.6.3",
+    "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-process": "^2.4.0",
+    "@tauri-apps/plugin-updater": "^2.14.1",
+    "ajv": "^8.20.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/node": "^22.20.7",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.16"
+  }
+}
+

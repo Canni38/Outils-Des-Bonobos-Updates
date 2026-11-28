@@ -1,0 +1,311 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bonobos.local/schemas/layout-v2.schema.json",
+  "title": "Outils Des Bonobos layout configuration v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "layoutId", "pages"],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "layoutId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9._-]*$"
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/definitions/page"
+      }
+    }
+  },
+  "definitions": {
+    "nodeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9._-]*$"
+    },
+    "nodeName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "alignment": {
+      "enum": ["left", "center", "right"]
+    },
+    "spacing": {
+      "enum": ["none", "small", "medium", "large"]
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "order", "rows"],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/nodeId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rows": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/definitions/row"
+          }
+        }
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "columns"],
+      "properties": {
+        "type": {
+          "const": "row"
+        },
+        "id": {
+          "$ref": "#/definitions/nodeId"
+        },
+        "name": {
+          "$ref": "#/definitions/nodeName"
+        },
+        "alignment": {
+          "$ref": "#/definitions/alignment"
+        },
+        "spacing": {
+          "$ref": "#/definitions/spacing"
+        },
+        "columns": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/definitions/column"
+          }
+        }
+      }
+    },
+    "column": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "span", "blocks"],
+      "properties": {
+        "type": {
+          "const": "column"
+        },
+        "id": {
+          "$ref": "#/definitions/nodeId"
+        },
+        "name": {
+          "$ref": "#/definitions/nodeName"
+        },
+        "alignment": {
+          "$ref": "#/definitions/alignment"
+        },
+        "spacing": {
+          "$ref": "#/definitions/spacing"
+        },
+        "span": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mobile", "tablet", "desktop"],
+          "properties": {
+            "mobile": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "tablet": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "desktop": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            }
+          }
+        },
+        "blocks": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/definitions/block"
+          }
+        }
+      }
+    },
+    "block": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "text", "level"],
+          "properties": {
+            "type": {
+              "const": "heading"
+            },
+            "id": {
+              "$ref": "#/definitions/nodeId"
+            },
+            "name": {
+              "$ref": "#/definitions/nodeName"
+            },
+            "alignment": {
+              "$ref": "#/definitions/alignment"
+            },
+            "spacing": {
+              "$ref": "#/definitions/spacing"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "level": {
+              "type": "integer",
+              "enum": [1, 2, 3]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "text", "tone"],
+          "properties": {
+            "type": {
+              "const": "text"
+            },
+            "id": {
+              "$ref": "#/definitions/nodeId"
+            },
+            "name": {
+              "$ref": "#/definitions/nodeName"
+            },
+            "alignment": {
+              "$ref": "#/definitions/alignment"
+            },
+            "spacing": {
+              "$ref": "#/definitions/spacing"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "tone": {
+              "enum": ["default", "muted", "accent"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "label", "actionId", "variant"],
+          "properties": {
+            "type": {
+              "const": "button"
+            },
+            "id": {
+              "$ref": "#/definitions/nodeId"
+            },
+            "name": {
+              "$ref": "#/definitions/nodeName"
+            },
+            "alignment": {
+              "$ref": "#/definitions/alignment"
+            },
+            "spacing": {
+              "$ref": "#/definitions/spacing"
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "actionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-z][a-z0-9._-]*$"
+            },
+            "variant": {
+              "enum": ["primary", "secondary"]
+            },
+            "iconId": {
+              "enum": ["info", "check", "arrow-right"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id", "title", "content"],
+          "properties": {
+            "type": {
+              "const": "card"
+            },
+            "id": {
+              "$ref": "#/definitions/nodeId"
+            },
+            "name": {
+              "$ref": "#/definitions/nodeName"
+            },
+            "alignment": {
+              "$ref": "#/definitions/alignment"
+            },
+            "spacing": {
+              "$ref": "#/definitions/spacing"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "id"],
+          "properties": {
+            "type": {
+              "const": "separator"
+            },
+            "id": {
+              "$ref": "#/definitions/nodeId"
+            },
+            "name": {
+              "$ref": "#/definitions/nodeName"
+            },
+            "alignment": {
+              "$ref": "#/definitions/alignment"
+            },
+            "spacing": {
+              "$ref": "#/definitions/spacing"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
